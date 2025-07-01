@@ -1,0 +1,23 @@
+tpch:
+    target: dev
+    outputs:
+        prod:
+            type: snowflake
+            threads: 8
+            account: 'not needed'
+            user: 'not needed'
+            role: accountadmin
+            database: dbt_demo
+            schema: dev
+            warehouse: dbt_wh
+
+        dev:
+            type: snowflake
+            threads: 8
+            account: 'not needed'
+            user: 'not needed'
+            role: accountadmin
+            database: dbt_demo
+            schema: prod
+            warehouse: dbt_wh
+            
