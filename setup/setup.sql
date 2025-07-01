@@ -56,20 +56,20 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
   ENABLED = TRUE;
 
 -- create file format and stage
-CREATE OR REPLACE FILE FORMAT demo_db.public.csv_ff 
+CREATE OR REPLACE FILE FORMAT dbt_demo.public.csv_ff 
 type = 'csv';
 
-CREATE OR REPLACE STAGE demo_db.public.s3load
+CREATE OR REPLACE STAGE dbt_demo.public.s3load
 COMMENT = 'Quickstarts S3 Stage Connection'
 url = 's3://sfquickstarts/frostbyte_tastybytes/'
-file_format = demo_db.public.csv_ff;
+file_format = dbt_demo.public.csv_ff;
 
 /*--
  raw zone table build 
 --*/
 
 -- country table build
-CREATE OR REPLACE TABLE demo_db.raw.country
+CREATE OR REPLACE TABLE dbt_demo.raw.country
 (
     country_id NUMBER(18,0),
     country VARCHAR(16777216),
@@ -82,7 +82,7 @@ CREATE OR REPLACE TABLE demo_db.raw.country
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- franchise table build
-CREATE OR REPLACE TABLE demo_db.raw.franchise 
+CREATE OR REPLACE TABLE dbt_demo.raw.franchise 
 (
     franchise_id NUMBER(38,0),
     first_name VARCHAR(16777216),
@@ -95,7 +95,7 @@ CREATE OR REPLACE TABLE demo_db.raw.franchise
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- location table build
-CREATE OR REPLACE TABLE demo_db.raw.location
+CREATE OR REPLACE TABLE dbt_demo.raw.location
 (
     location_id NUMBER(19,0),
     placekey VARCHAR(16777216),
@@ -108,7 +108,7 @@ CREATE OR REPLACE TABLE demo_db.raw.location
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- menu table build
-CREATE OR REPLACE TABLE demo_db.raw.menu
+CREATE OR REPLACE TABLE dbt_demo.raw.menu
 (
     menu_id NUMBER(19,0),
     menu_type_id NUMBER(38,0),
@@ -125,7 +125,7 @@ CREATE OR REPLACE TABLE demo_db.raw.menu
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- truck table build 
-CREATE OR REPLACE TABLE demo_db.raw.truck
+CREATE OR REPLACE TABLE dbt_demo.raw.truck
 (
     truck_id NUMBER(38,0),
     menu_type_id NUMBER(38,0),
@@ -145,7 +145,7 @@ CREATE OR REPLACE TABLE demo_db.raw.truck
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- order_header table build
-CREATE OR REPLACE TABLE demo_db.raw.order_header
+CREATE OR REPLACE TABLE dbt_demo.raw.order_header
 (
     order_id NUMBER(38,0),
     truck_id NUMBER(38,0),
@@ -167,7 +167,7 @@ CREATE OR REPLACE TABLE demo_db.raw.order_header
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- order_detail table build
-CREATE OR REPLACE TABLE demo_db.raw.order_detail 
+CREATE OR REPLACE TABLE dbt_demo.raw.order_detail 
 (
     order_detail_id NUMBER(38,0),
     order_id NUMBER(38,0),
@@ -182,7 +182,7 @@ CREATE OR REPLACE TABLE demo_db.raw.order_detail
 COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1, "minor":0}, "attributes":{"is_quickstart":1, "source":"sql"}}';
 
 -- customer loyalty table build
-CREATE OR REPLACE TABLE demo_db.raw.customer_loyalty
+CREATE OR REPLACE TABLE dbt_demo.raw.customer_loyalty
 (
     customer_id NUMBER(38,0),
     first_name VARCHAR(16777216),
@@ -207,33 +207,33 @@ COMMENT = '{"origin":"sf_sit-is", "name":"tasty-bytes-dbt", "version":{"major":1
 --*/
 
 -- country table load
-COPY INTO demo_db.raw.country
-FROM @demo_db.public.s3load/raw_pos/country/;
+COPY INTO dbt_demo.raw.country
+FROM @dbt_demo.public.s3load/raw_pos/country/;
 
 -- franchise table load
-COPY INTO demo_db.raw.franchise
-FROM @demo_db.public.s3load/raw_pos/franchise/;
+COPY INTO dbt_demo.raw.franchise
+FROM @dbt_demo.public.s3load/raw_pos/franchise/;
 
 -- location table load
-COPY INTO demo_db.raw.location
-FROM @demo_db.public.s3load/raw_pos/location/;
+COPY INTO dbt_demo.raw.location
+FROM @dbt_demo.public.s3load/raw_pos/location/;
 
 -- menu table load
-COPY INTO demo_db.raw.menu
-FROM @demo_db.public.s3load/raw_pos/menu/;
+COPY INTO dbt_demo.raw.menu
+FROM @dbt_demo.public.s3load/raw_pos/menu/;
 
 -- truck table load
-COPY INTO demo_db.raw.truck
-FROM @demo_db.public.s3load/raw_pos/truck/;
+COPY INTO dbt_demo.raw.truck
+FROM @dbt_demo.public.s3load/raw_pos/truck/;
 
 -- customer_loyalty table load
-COPY INTO demo_db.raw.customer_loyalty
-FROM @demo_db.public.s3load/raw_customer/customer_loyalty/;
+COPY INTO dbt_demo.raw.customer_loyalty
+FROM @dbt_demo.public.s3load/raw_customer/customer_loyalty/;
 
 -- order_header table load
-COPY INTO demo_db.raw.order_header
-FROM @demo_db.public.s3load/raw_pos/order_header/;
+COPY INTO dbt_demo.raw.order_header
+FROM @dbt_demo.public.s3load/raw_pos/order_header/;
 
 -- order_detail table load
-COPY INTO demo_db.raw.order_detail
-FROM @demo_db.public.s3load/raw_pos/order_detail/;
+COPY INTO dbt_demo.raw.order_detail
+FROM @dbt_demo.public.s3load/raw_pos/order_detail/;
