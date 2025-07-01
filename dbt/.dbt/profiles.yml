@@ -1,0 +1,24 @@
+tpch:
+    target: dev
+    outputs:
+        prod:
+            type: snowflake
+            threads: 8
+            account: <account>
+            user: <user>
+            password: <password>
+            role: <role>
+            database: <target_database>
+            warehouse: <snowflake_warehouse>
+            schema: <default_schema>
+
+        dev:
+            type: snowflake
+            threads: 8
+            account: <account>
+            user: <user>
+            password: <password>
+            role: <role>
+            database: <target_database>
+            warehouse: <snowflake_warehouse>
+            schema: <default_schema>
