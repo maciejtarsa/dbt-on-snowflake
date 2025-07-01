@@ -18,29 +18,30 @@ Same as in that repo, we'll have 2 environments - `dev` and `prod`. We'll assume
 
 ### Snowflake Requirements
 
-Workspaces are currently in preview in Snowflake. Preview features will need to be enabled on your account. To check the status of your account, run
+Workspaces are currently in preview in Snowflake. Preview features will need to be enabled on your account.
 ```sql
+-- To check the status of your account
 SELECT SYSTEM$GET_PREVIEW_ACCESS_STATUS();
 -- and to enable it
 SELECT SYSTEM$ENABLE_PREVIEW_ACCESS();
 ```
 [More info about preview features](https://docs.snowflake.com/en/release-notes/preview-features)
 
-Workspaces for dbt Projects also require Personal databases to be enabled, this can be done by ACCOUNTADMIN role through running a command
+Workspaces for dbt Projects also require Personal databases to be enabled, this can be done by ACCOUNTADMIN role through running
 ```sql
 ALTER ACCOUNT SET ENABLE_PERSONAL_DATABASE = TRUE;
 -- or for specific user only
 ALTER USER "USERNAME" SET ENABLE_PERSONAL_DATABASE = TRUE;
 ```
 
-Secondary roles access are another requirement, this can be abled for a user
+Secondary roles access is another requirement, this can be abled for a user
 ```sql
 ALTER USER "USERNAME" SET DEFAULT_SECONDARY_ROLES = ('ALL');
 ```
 
-Importantly, if your account has a session policy whcih disabled use of secondary roles, you will not have access to Workspaces. I got stuck on this for a while, as the errors returned from Snowflake weren't very descriptive.
+Importantly, if your account has a session policy which disabled use of secondary roles, you will not have access to Workspaces. I got stuck on this for a while, as the errors returned from Snowflake weren't very descriptive.
 
-Another requirements are related to git integration - a secret if your repository is private and api integration object.
+Other requirements are related to git integration - a secret if your repository is private - and api integration object.
 ```sql
 CREATE OR REPLACE SECRET git_secret
   TYPE = password
@@ -55,7 +56,6 @@ CREATE OR REPLACE API INTEGRATION git_api_integration
 ```
 
 Finally, if you require any dbt packages, a network rule and external access integration will be required.
-
 ```sql
 CREATE OR REPLACE NETWORK RULE dbt_network_rule
   MODE = EGRESS
@@ -71,9 +71,11 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
   ENABLED = TRUE;
 ```
 
-While you could now create a git repository, there is currently to programmatically create a workspace and connect it to an existing git repository object. Hence the next step needs to be done in the UI.
+While you could now create a git repository programatically, there is currently to programmatic way create a workspace and connect it to an existing git repository object. Hence the next step needs to be done in the UI.
 
 ![Snowflake User interface for creating a workspace](images/create.workspace.png)
+
+In order to use the sample git repo from Snowflake - we also needs some sample data, instructions how to create and load it can be found in that repo under setup.
 
 ## Working example
 
