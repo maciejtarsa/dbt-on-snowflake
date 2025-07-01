@@ -38,18 +38,62 @@ ALTER USER "USERNAME" SET DEFAULT_SECONDARY_ROLES = ('ALL');
 
 Importantly, if your account has a session policy whcih disabled use of secondary roles, you will not have access to Workspaces. I got stuck on this for a while, as the errors returned from Snowflake weren't very descriptive.
 
+Another requirements are related to git integration - a secret if your repository is private and api integration object.
+```sql
+CREATE OR REPLACE SECRET git_secret
+  TYPE = password
+  USERNAME = 'git_username'
+  PASSWORD = 'git_token';
+
+CREATE OR REPLACE API INTEGRATION git_api_integration
+  API_PROVIDER = git_https_api
+  API_ALLOWED_PREFIXES = ('https://github.com/my-account')
+  ALLOWED_AUTHENTICATION_SECRETS = (dbt_demo.integrations.git_secret)
+  ENABLED = TRUE;
+```
+
+Finally, if you require any dbt packages, a network rule and external access integration will be required.
+
+```sql
+CREATE OR REPLACE NETWORK RULE dbt_network_rule
+  MODE = EGRESS
+  TYPE = HOST_PORT
+  -- Minimal URL allowlist that is required for dbt deps
+  VALUE_LIST = (
+    'hub.getdbt.com',
+    'codeload.github.com'
+    );
+
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
+  ALLOWED_NETWORK_RULES = (dbt_network_rule)
+  ENABLED = TRUE;
+```
+
+While you could now create a git repository, there is currently to programmatically create a workspace and connect it to an existing git repository object. Hence the next step needs to be done in the UI.
+
+![Snowflake User interface for creating a workspace](images/create.workspace.png)
 
 ## Working example
 
-It's worth noting that a dbt project is a schema level object and it support role-based access control (RBAC)
+dbt commands can be executed in the UI by selecting one of your profiles and commands from the drop down.
+![Drop downs for running dbt commands](images/dbt_deps_dropdown.png)
+You can then inspect the outputs in the Outputs tab
+![Output of running dbt deps](images/dbt_deps_output.png)
 
 ### Running and scheduling
 
+It's worth noting that a dbt project is a schema level object and it support role-based access control (RBAC)
 You can use EXECUTE DBT PROJECT command from a Snowflake warehouse to run dbt commands like `test` and `run`, these can also be scheduled as tasks. Worth noting is that the new Adaptive Warehouse can be used for dbt execution.
 
 ### Observability and alers
 
+## Considerations and limitations
+
+Workspaces are currently scoped to a user level. This means that you cannot create a git repository with dbt project in a shared database so that multiple users have access to it - they would all needs to create them individually in their workspaces.  There is also currenrtly no programmatic way to create workspaces - they can only be created in the UI.
+
 ## Conclusions
+
+
 
 
 Workspaces docs: https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces
