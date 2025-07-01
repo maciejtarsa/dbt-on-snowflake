@@ -1,39 +1,25 @@
+## Project
+name: tasty_bytes
+version: "1.0"
+config-version: 2
+profile: tasty_bytes
 
-# Name your package! Package names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 'dbt_tpch'
-version: '1.0'
+## Sources
+model-paths: [models]
+analysis-paths: [analysis]
+test-paths: [tests]
+seed-paths: [seeds]
+macro-paths: [macros]
+snapshot-paths: [snapshots]
 
-source-paths: ["models"]
-analysis-paths: ["analysis"] 
-test-paths: ["tests"]
-data-paths: ["data"]
-macro-paths: ["macros"]
+## Target
+target-path: target
+clean-targets: [target, dbt_modules]
 
-target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
-    - "target"
-    - "dbt_modules"
-
-profile: tpch
-
-require-dbt-version: ">=0.13.1"
-
-quoting:
-    database: false
-    identifier: false
-    schema: false
-
+## Models
 models:
-  dbt_tpch:
-
-      vars:
-        max_ship_date: "'1998-12-01'"
-
-      base:
-        schema: base
-      ods:
-        schema: ods
-      wh:
-        schema: wh
+  tasty_bytes:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
