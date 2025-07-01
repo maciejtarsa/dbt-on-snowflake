@@ -12,7 +12,9 @@ The timing on this new feature introduction in Snowflake is interesting. Very re
 
 ### dbt project
 
-The most likely use case is that we will be bringing in an existing dbt project into Workspaces - hence we're going to use a sample dbt project with some existing models, based on Snowflake Sample Data - [this project](https://github.com/clausherther/dbt-tpch) looks like a good start. Let's say that we'll have 2 environments - `dev` and `prod`. We'll assume that until now, we have been running this project somewhere else, be it an Airflow instance or manual calls from CLI.
+The most likely use case is that we will be bringing in an existing dbt project into Workspaces - hence we're going to use a sample dbt project with some existing models - Snowflake provides [a sample dbt projects that can be used](https://github.com/Snowflake-Labs/getting-started-with-dbt-on-snowflake). We're going to copy the contents of `tasty_bytes_dbt_demo` directory into our `dbt` directory for Snowflake to pick them up.
+
+Same as in that repo, we'll have 2 environments - `dev` and `prod`. We'll assume that until now, we have been running this project somewhere else, be it an Airflow instance or manual calls from CLI.
 
 ### Snowflake Requirements
 
@@ -80,16 +82,20 @@ dbt commands can be executed in the UI by selecting one of your profiles and com
 You can then inspect the outputs in the Outputs tab
 ![Output of running dbt deps](images/dbt_deps_output.png)
 
+
 ### Running and scheduling
 
-It's worth noting that a dbt project is a schema level object and it support role-based access control (RBAC)
 You can use EXECUTE DBT PROJECT command from a Snowflake warehouse to run dbt commands like `test` and `run`, these can also be scheduled as tasks. Worth noting is that the new Adaptive Warehouse can be used for dbt execution.
 
 ### Observability and alers
 
 ## Considerations and limitations
 
+It's worth noting that a dbt project is a schema level object and it support role-based access control (RBAC)
+
 Workspaces are currently scoped to a user level. This means that you cannot create a git repository with dbt project in a shared database so that multiple users have access to it - they would all needs to create them individually in their workspaces.  There is also currenrtly no programmatic way to create workspaces - they can only be created in the UI.
+
+Working with git un Snowflake UI is quite painful at the start. It's not quite as advanced as other Git tools - there's also no support for using the command line, so you are left with buttons for pushing, pulling, commiting, etc. Running the git commands is also quite slow, even adding a commit to a branch took a few seconds.
 
 ## Conclusions
 
