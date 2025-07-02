@@ -94,7 +94,7 @@ While you could now create a Git repository programmatically, there is currently
 
 *Figure 1: Snowflake User Interface for creating a Workspace*  
 
-In order to use the sample Git repo from Snowflake, we also need some sample data. Instructions on how to create and load it can be found in [the sample dbt project repo](https://github.com/Snowflake-Labs/getting-started-with-dbt-on-snowflake) or [the Git repo for this article](https://github.com/maciejtarsa/dbt-on-snowflake/tree/main/setup).
+In order to use the sample Git repo from Snowflake, we also need some sample data. Instructions on how to create and load it can be found in [the sample dbt project repo](https://github.com/Snowflake-Labs/getting-started-with-dbt-on-snowflake/tree/main/tasty_bytes_dbt_demo/setup) or [the Git repo for this article](https://github.com/maciejtarsa/dbt-on-snowflake/tree/main/setup).
 
 ## Working example
 
@@ -136,7 +136,7 @@ Anyway - time to run the models. The output is your standard `dbt run` output.
 *Figure 6: `dbt run` output*  
 
 This is all well and good - we can run dbt in our personal Workspace, which is the equivalent of running it from your laptop.  
-Deployment is the next step. We need to deploy our dbt project from our Workspace -vthis will create a dbt project object. That object can then be used to schedule, run, and monitor a dbt project outside of the Workspace. It's worth noting that a dbt project is a schema-level object and it supports role-based access control (RBAC).
+Deployment is the next step. We need to deploy our dbt project from our Workspace - this will create a dbt project object. That object can then be used to schedule, run, and monitor a dbt project outside of the Workspace. It's worth noting that a dbt project is a schema-level object and it supports role-based access control (RBAC).
 
 This operation can either be done in the UI, or with the following Snowflake command:
 ```sql
@@ -164,7 +164,7 @@ Note that a task can also be created in the UI of the Workspace from your dbt pr
 
 An important aspect of working with dbt is the ability to monitor and inspect task execution - including drilling down to individual tasks and alerting relevant teams when model runs fail. I'm interested in understanding what Snowflake offers to support those needs.
 
-dbt projects now have their own monitoring dashboard:
+dbt projects now have their own monitoring dashboard accessible through monitoring tools.
 <p align="center">
   <img src="images/dbt_on_snowflake_monitoring_dashboard.png" alt="dbt monitoring dashboard">
 </p>
@@ -184,8 +184,7 @@ We can drill down on any individual run where we can see dbt output and telemetr
 
 *Figure 9: dbt monitoring traces*  
 
-dbt run results are saved by Snowflake and can be exported to a named internal stage for further analysis if required.
-Apart from that - as we are using tasks here - all the usual Snowflake observability and monitoring can be used. For example, you could create a task which will monitor your dbt execution, and attach an alert that would notify of any failures.
+dbt run results are saved by Snowflake and can be exported to a named internal stage for further analysis if required. Apart from that - as we are using tasks here - all the usual Snowflake observability and monitoring can be used. For example, you could create a task which will monitor your dbt execution, and attach an alert that would notify of any failures.
 
 ## Considerations and limitations
 
@@ -195,11 +194,11 @@ Working with Git in the Snowflake UI is quite painful at the start. It's not qui
 
 While the way you deploy a project as an object and schedule it with tasks is nice, I can see issues when multiple users deploy the same project simultaneously from their individual Workspaces. We need some way to deploy it from CI/CD - from the main branch only after the changes have been inspected and approved - not from individual users' Workspaces. I expect having a service user's Workspace would work here, but at the moment you cannot create a dbt project Workspace programmatically, so someone would still need to log into the UI as that service user.
 
-However, there is still a route to develop and test the models locally, but deploy and run them in higher environments directly in Snowflake. We just need to be able to deploy them from a Workspace that is not linked to any particular user.
+There is still a way to develop and test models locally, then deploy and run them in higher environments directly in Snowflake. However, ideally, this should be paired with the ability to deploy from a Workspace that is not linked to any particular user.
 
 ## Conclusions
 
-Overall, this is a very interesting development and one worth watching and considering. There are some nice things here - not having to use additional tools for your dbt runs or dbt results integration with native Snowflake monitoring. There are some critical parts missing though - especially having to use an individual user's Workspace for deployment. Nevertheless, if your stack contains tools whose only job is to run dbt, fully switching to Snowflake is definitely worth considering, and doing some experimentation based on your workload might be a good idea.
+Overall, this is a very interesting development and one worth watching. There are some clear benefits, such as not needing additional tools for your dbt runs or for integrating dbt results with native Snowflake monitoring. However, some critical features are still missing - especially the need to use an individual user's Workspace for deployment. Nevertheless, if your stack currently relies on tools whose only job is to run dbt, fully switching to Snowflake is definitely worth considering. It is a good idea to experiment with this feature now, while it is still in preview, to see how it fits your workload and to be prepared for when it becomes generally available.
 
 We'd love an excuse to try all of this in practice. If you have a use case that could benefit from running dbt on Snowflake, [let us know](https://www.mechanicalrock.io/lets-get-started)!
 
