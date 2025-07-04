@@ -2,13 +2,13 @@
 
 This repository contains a sample project for running dbt on Snowflake.  The accompanying blog post is included below.
 
-Article first published on Mechanical Rock website [TODO]  
-Another version was also published on Medium [TODO]
+Article first published on [Mechanical Rock website](https://www.mechanicalrock.io/blog/running-dbt-on-snowflake)   
+Another version was also published on [Medium](https://maciejtarsa.medium.com/running-dbt-projects-on-snowflake-4e6d76b16139)
 
-## Running dbt on Snowflake
+## Running dbt projects on Snowflake
 
 <p align="center">
-  <img src="images/dbt_on_snowflake.png" alt="dbt and Snowflake logos">
+  <img src="images/dbt_on_snowflake.png" alt="dbt and Snowflake logos" />
 </p>
 
 We've seen dbt being run manually from the local CLI, in dbt Cloud, using Cosmos in managed Airflow, using databricks tasks, as well as in CI/CD pipelines. But Snowflake just introduced another way to run it natively on their platform - with their new Workspaces feature and Git integration. Let's give it a go.
@@ -89,10 +89,9 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
 While you could now create a Git repository programmatically, there is currently no programmatic way to create a Workspace and connect it to an existing Git repository object. Hence, the next step needs to be done in the UI.
 
 <p align="center">
-  <img src="images/dbt_on_snowflake_create_workspace.png" alt="Snowflake User interface for creating a Workspace">
+<img src="images/dbt_on_snowflake_create_workspace.png" alt="Snowflake User interface for creating a Workspace" />
+<i>Figure 1: Snowflake User Interface for creating a Workspace</i>
 </p>
-
-*Figure 1: Snowflake User Interface for creating a Workspace*  
 
 In order to use the sample Git repo from Snowflake, we also need some sample data. Instructions on how to create and load it can be found in [the sample dbt project repo](https://github.com/Snowflake-Labs/getting-started-with-dbt-on-snowflake/tree/main/tasty_bytes_dbt_demo/setup) or [the Git repo for this article](https://github.com/maciejtarsa/dbt-on-snowflake/tree/main/setup).
 
@@ -100,40 +99,35 @@ In order to use the sample Git repo from Snowflake, we also need some sample dat
 
 dbt commands can be executed in the UI by selecting your project (based on directory), profile (based on your `profiles.yml` file), and dbt command from the drop-downs.
 <p align="center">
-  <img src="images/dbt_on_snowflake_deps_dropdown.png" alt="Drop downs for running dbt commands">
-</p>
-
-*Figure 2: Running dbt commands*  
+<img src="images/dbt_on_snowflake_deps_dropdown.png" alt="Drop downs for running dbt commands" />
+<i>Figure 2: Running dbt commands</i>
+</p> 
 
 You can then inspect the outputs in the Outputs tab. Here's an example of running `dbt deps`.
 <p align="center">
-  <img src="images/dbt_on_snowflake_deps_output.png" alt="Output of running dbt deps">
+<img src="images/dbt_on_snowflake_deps_output.png" alt="Output of running dbt deps" />
+<i>Figure 3: Output of running `dbt deps`</i>
 </p>
-
-*Figure 3: Output of running `dbt deps`*  
 
 Equally, we can run `dbt compile`. As this command will produce a manifest, we will be able to inspect our dbt models visually on the DAG view.
 <p align="center">
-  <img src="images/dbt_on_snowflake_compile.png" alt="Output of running dbt compile">
+<img src="images/dbt_on_snowflake_compile.png" alt="Output of running dbt compile" />
+<i>Figure 4: Output of running `dbt compile`</i>
 </p>
-
-*Figure 4: Output of running `dbt deps`*  
 
 Selecting a model in the DAG view also opens the source code for that model and highlights the file in the file tree, which is quite useful.
 <p align="center">
-  <img src="images/dbt_on_snowflake_dag_view.png" alt="DAG view of compiled project">
+<img src="images/dbt_on_snowflake_dag_view.png" alt="DAG view of compiled project" />
+<i>Figure 5: Dag view of compiled project</i>
 </p>
-
-*Figure 5: Dag view of compiled project*
 
 Unfortunately, selecting a lot of the models leaves us with a lot of open tabs in the editor, and they each need to be closed manually.
 
 Anyway - time to run the models. The output is your standard `dbt run` output.
 <p align="center">
-  <img src="images/dbt_on_snowflake_run.png" alt="dbt run output">
+<img src="images/dbt_on_snowflake_run.png" alt="dbt run output" />
+<i>Figure 6: `dbt run` output</i>
 </p>
-
-*Figure 6: `dbt run` output*  
 
 This is all well and good - we can run dbt in our personal Workspace, which is the equivalent of running it from your laptop.  
 Deployment is the next step. We need to deploy our dbt project from our Workspace - this will create a dbt project object. That object can then be used to schedule, run, and monitor a dbt project outside of the Workspace. It's worth noting that a dbt project is a schema-level object and it supports role-based access control (RBAC).
@@ -166,23 +160,20 @@ An important aspect of working with dbt is the ability to monitor and inspect ta
 
 dbt projects now have their own monitoring dashboard accessible through monitoring tools.
 <p align="center">
-  <img src="images/dbt_on_snowflake_monitoring_dashboard.png" alt="dbt monitoring dashboard">
+<img src="images/dbt_on_snowflake_monitoring_dashboard.png" alt="dbt monitoring dashboard" />
+<i>Figure 7: dbt monitoring dashboard</i>
 </p>
-
-*Figure 7: dbt monitoring dashboard*  
 
 We can drill down on any individual run where we can see dbt output and telemetry tracing.
 <p align="center">
-  <img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring output">
+<img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring output" />
+<i>Figure 8: dbt monitoring output</i>
 </p>
-
-*Figure 8: dbt monitoring output*  
 
 <p align="center">
-  <img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring traces">
-</p>
-
-*Figure 9: dbt monitoring traces*  
+<img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring traces" />
+<i>Figure 9: dbt monitoring traces</i>
+</p> 
 
 dbt run results are saved by Snowflake and can be exported to a named internal stage for further analysis if required. Apart from that - as we are using tasks here - all the usual Snowflake observability and monitoring can be used. For example, you could create a task which will monitor your dbt execution, and attach an alert that would notify of any failures.
 
