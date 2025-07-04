@@ -90,6 +90,7 @@ While you could now create a Git repository programmatically, there is currently
 
 <p align="center">
 <img src="images/dbt_on_snowflake_create_workspace.png" alt="Snowflake User interface for creating a Workspace" />
+<br>
 <i>Figure 1: Snowflake User Interface for creating a Workspace</i>
 </p>
 
@@ -100,24 +101,28 @@ In order to use the sample Git repo from Snowflake, we also need some sample dat
 dbt commands can be executed in the UI by selecting your project (based on directory), profile (based on your `profiles.yml` file), and dbt command from the drop-downs.
 <p align="center">
 <img src="images/dbt_on_snowflake_deps_dropdown.png" alt="Drop downs for running dbt commands" />
+<br>
 <i>Figure 2: Running dbt commands</i>
 </p> 
 
 You can then inspect the outputs in the Outputs tab. Here's an example of running `dbt deps`.
 <p align="center">
 <img src="images/dbt_on_snowflake_deps_output.png" alt="Output of running dbt deps" />
+<br>
 <i>Figure 3: Output of running `dbt deps`</i>
 </p>
 
 Equally, we can run `dbt compile`. As this command will produce a manifest, we will be able to inspect our dbt models visually on the DAG view.
 <p align="center">
 <img src="images/dbt_on_snowflake_compile.png" alt="Output of running dbt compile" />
+<br>
 <i>Figure 4: Output of running `dbt compile`</i>
 </p>
 
 Selecting a model in the DAG view also opens the source code for that model and highlights the file in the file tree, which is quite useful.
 <p align="center">
 <img src="images/dbt_on_snowflake_dag_view.png" alt="DAG view of compiled project" />
+<br>
 <i>Figure 5: Dag view of compiled project</i>
 </p>
 
@@ -126,6 +131,7 @@ Unfortunately, selecting a lot of the models leaves us with a lot of open tabs i
 Anyway - time to run the models. The output is your standard `dbt run` output.
 <p align="center">
 <img src="images/dbt_on_snowflake_run.png" alt="dbt run output" />
+<br>
 <i>Figure 6: `dbt run` output</i>
 </p>
 
@@ -161,17 +167,20 @@ An important aspect of working with dbt is the ability to monitor and inspect ta
 dbt projects now have their own monitoring dashboard accessible through monitoring tools.
 <p align="center">
 <img src="images/dbt_on_snowflake_monitoring_dashboard.png" alt="dbt monitoring dashboard" />
+<br>
 <i>Figure 7: dbt monitoring dashboard</i>
 </p>
 
 We can drill down on any individual run where we can see dbt output and telemetry tracing.
 <p align="center">
 <img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring output" />
+<br>
 <i>Figure 8: dbt monitoring output</i>
 </p>
 
 <p align="center">
 <img src="images/dbt_on_snowflake_monitoring_traces.png" alt="dbt monitoring traces" />
+<br>
 <i>Figure 9: dbt monitoring traces</i>
 </p> 
 
