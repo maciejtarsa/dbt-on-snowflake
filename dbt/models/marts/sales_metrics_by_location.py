@@ -1,4 +1,12 @@
+import os
+import sys
+import zipfile
 from snowflake.snowpark.functions import col, lit, concat, count, sum as sum_, coalesce
+import holidays
+
+def is_holiday(date_col):
+    french_holidays = holidays.France()
+    return date_col in french_holidays
 
 def model(dbt, session):
     """
@@ -6,6 +14,14 @@ def model(dbt, session):
     It joins location data with trucks and aggregates metrics by location.
     Uses raw_pos models as sources instead of tb_101 directly.
     """
+    dbt.config(
+        materialized = "table",
+        packages = ["holidays"],
+    )
+
+    # # Snowflake returns a result with a column named "GET_MESSAGE" (the name of the proc)
+    # is_holiday_flag = result[0][0]  # or result[0]["GET_MESSAGE"]
+
     # Get tables using dbt's ref function to reference the raw_pos models
     locations_df = dbt.ref('raw_pos_location')
     trucks_df = dbt.ref('raw_pos_truck')
@@ -72,6 +88,8 @@ def model(dbt, session):
                 lit(")")
             )
         )
+        # .withColumn("HARDCODED_DATE", lit(hardcoded_date))
+        # .withColumn("IS_HOLIDAY_FRANCE", lit(is_holiday_flag))
     )
     
     # Return the final dataframe
