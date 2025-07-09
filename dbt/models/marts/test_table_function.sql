@@ -4,4 +4,4 @@ with source_data as (
 )
 
 SELECT transform_table.id, value
-  FROM source_data, TABLE(DBT_DEMO.DEV.transform_table(customer_id, city))
+  FROM source_data, TABLE(DBT_DEMO.DEV.transform_table(first_name, city))
