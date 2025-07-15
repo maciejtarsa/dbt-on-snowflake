@@ -17,7 +17,7 @@ def model(dbt, session):
     dbt.config(
         materialized = "table",
         packages = ["holidays"],
-        imports = ['@dbt.demo.packages/pctest.zip'],
+        imports = ['@dbt_demo.dev.packages/pctest.zip'],
     )
 
     # # Snowflake returns a result with a column named "GET_MESSAGE" (the name of the proc)
