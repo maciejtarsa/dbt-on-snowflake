@@ -17,10 +17,12 @@ def model(dbt, session):
     dbt.config(
         materialized = "table",
         packages = ["holidays"],
+        imports = ['@packages/pctest.zip'],
     )
 
     # # Snowflake returns a result with a column named "GET_MESSAGE" (the name of the proc)
     # is_holiday_flag = result[0][0]  # or result[0]["GET_MESSAGE"]
+    import pctest
 
     # Get tables using dbt's ref function to reference the raw_pos models
     locations_df = dbt.ref('raw_pos_location')
