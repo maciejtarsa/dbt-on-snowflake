@@ -3,6 +3,7 @@ import sys
 import zipfile
 from snowflake.snowpark.functions import col, lit, concat, count, sum as sum_, coalesce
 import holidays
+# import pctest
 
 def is_holiday(date_col):
     french_holidays = holidays.France()
@@ -20,9 +21,18 @@ def model(dbt, session):
         imports = ['@dbt_demo.dev.packages/pctest.zip'],
     )
 
+    # List files in the stage
+    results = session.sql("LIST @mdbt_demo.dev.packages/").collect()
+    
+    # Extract file names from the result
+    rows = [Row(file_name=row['name']) for row in results]
+
+    # Convert list of rows into DataFrame
+    return session.create_dataframe(rows)
+
     # # Snowflake returns a result with a column named "GET_MESSAGE" (the name of the proc)
     # is_holiday_flag = result[0][0]  # or result[0]["GET_MESSAGE"]
-    import pctest
+
 
     # Get tables using dbt's ref function to reference the raw_pos models
     locations_df = dbt.ref('raw_pos_location')
